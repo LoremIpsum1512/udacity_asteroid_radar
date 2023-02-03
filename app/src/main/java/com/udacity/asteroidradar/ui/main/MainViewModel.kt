@@ -6,34 +6,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
-import com.udacity.asteroidradar.network.Network
+import com.udacity.asteroidradar.repository.AsteroidRepository
 import com.udacity.asteroidradar.utils.Constants
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val asteroidRepository: AsteroidRepository
+) : ViewModel() {
     private val _picOfDay = MutableLiveData<String>()
     val picOfDay: LiveData<String>
         get() = _picOfDay
 
     fun getPictureOfDay() {
         viewModelScope.launch {
-            val pic = Network.asteroidService.getPicOfDay()
+            val pic = asteroidRepository.getPictureOfDay()
             _picOfDay.value = pic.url
         }
     }
 
     fun getAsteroidList() {
         viewModelScope.launch {
-            val sdf = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-            val dateString = sdf.format(Date())
-            val response =
-                Network.asteroidService.getAsteroidList(start = dateString, end = dateString)
-            val gson = Gson()
-            val jsonString = gson.toJson(response.body())
-            val asteroidList = parseAsteroidsJsonResult(JSONObject(jsonString))
+
         }
     }
 
