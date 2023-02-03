@@ -22,6 +22,7 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
 
         viewModel.getPictureOfDay()
+        viewModel.getAsteroidList()
         binding.viewModel = viewModel
 
         setHasOptionsMenu(true)
