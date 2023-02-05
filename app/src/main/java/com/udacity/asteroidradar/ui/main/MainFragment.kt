@@ -23,12 +23,13 @@ class MainFragment : Fragment() {
         super.onAttach(context)
         (activity as MainActivity).appComponent.inject(this)
         viewModel.getPictureOfDay()
+        viewModel.refreshAsteroidList()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
         
