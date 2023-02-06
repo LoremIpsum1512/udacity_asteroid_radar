@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class MainFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
+    private lateinit var adapter: AsteroidListAdapter
+    lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by viewModels {
         viewModelFactory
     }
@@ -33,13 +35,12 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentMainBinding.inflate(inflater)
+        binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
-
-        val adapter = AsteroidListAdapter(AsteroidClickListener {
+        adapter = AsteroidListAdapter(AsteroidClickListener {
             findNavController().navigate(
                 MainFragmentDirections.actionShowDetail(it)
             )
@@ -61,6 +62,22 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var message = ""
+        when (item.itemId) {
+            R.id.item_all -> {
+                message = "Show all saved asteroids"
+                viewModel.getAll()
+            }
+            R.id.item_today -> {
+                message = "Show today asteroids"
+                viewModel.getAsteroidFromDateRange(DateRange.today)
+            }
+            R.id.item_week -> {
+                message = "Show week asteroids"
+                viewModel.getAsteroidFromDateRange(DateRange.week)
+            }
+        }
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         return true
     }
 }

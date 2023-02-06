@@ -24,31 +24,34 @@ class AsteroidRepository @Inject constructor(
     private val asteroidDao: AsteroidDao
 ) {
 
-
-    val asteroidList: LiveData<List<Asteroid>> = asteroidDao.getAll()
-
     suspend fun getPictureOfDay(): PictureOfDay? {
         return try {
             asteroidService.getPicOfDay()
         } catch (e: Exception) {
             null
         }
-
-
     }
 
-    suspend fun refreshAsteroidList() {
+    suspend fun getAsteroidsFromNetwork(): List<Asteroid> {
         try {
-            val sdf = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-
             val response =
                 asteroidService.getAsteroidList(start = "", end = "")
             val gson = Gson()
             val jsonString = gson.toJson(response.body())
             val list = parseAsteroidsJsonResult(JSONObject(jsonString))
             asteroidDao.insertAll(list)
+            return list
         } catch (e: Exception) {
-            e.printStackTrace()
+            throw e
         }
     }
+
+    suspend fun getAsteroidsFromDB(): List<Asteroid> {
+        return asteroidDao.getAll()
+    }
+
+    suspend fun getAsteroidsFromDateRange(start: String, end: String): List<Asteroid> {
+        return asteroidDao.getDateRange(start = start, end = end)
+    }
+
 }

@@ -39,7 +39,7 @@ class RefreshAsteroidsWorker(
     override suspend fun doWork(): Result {
         return try {
             Log.i("RefreshAsteroidsWorker", "doWork")
-            asteroidRepository.refreshAsteroidList()
+            asteroidRepository.getAsteroidsFromNetwork()
             Log.i("RefreshAsteroidsWorker", "success")
             Result.success()
 

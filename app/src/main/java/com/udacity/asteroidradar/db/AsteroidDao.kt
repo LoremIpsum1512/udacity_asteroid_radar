@@ -13,5 +13,8 @@ interface AsteroidDao {
     suspend fun insertAll(asteroids: List<Asteroid>)
 
     @Query("SELECT * FROM asteroid ORDER BY closeApproachDate")
-    fun getAll(): LiveData<List<Asteroid>>
+    suspend fun getAll(): List<Asteroid>
+
+    @Query("SELECT * FROM asteroid  WHERE closeApproachDate >= :start AND closeApproachDate <= :end ORDER BY closeApproachDate")
+    suspend fun getDateRange(start: String, end: String): List<Asteroid>
 }
