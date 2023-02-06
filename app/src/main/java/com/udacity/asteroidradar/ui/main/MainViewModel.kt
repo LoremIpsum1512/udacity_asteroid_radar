@@ -9,6 +9,7 @@ import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import com.udacity.asteroidradar.utils.Constants
 import com.udacity.asteroidradar.vo.Asteroid
+import com.udacity.asteroidradar.vo.PictureOfDay
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -18,8 +19,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val asteroidRepository: AsteroidRepository
 ) : ViewModel() {
-    private val _picOfDay = MutableLiveData<String>()
-    val picOfDay: LiveData<String>
+    private val _picOfDay = MutableLiveData<PictureOfDay?>()
+    val picOfDay: LiveData<PictureOfDay?>
         get() = _picOfDay
 
     val asteroidList: LiveData<List<Asteroid>>
@@ -29,7 +30,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val pic = asteroidRepository.getPictureOfDay()
             if (pic != null)
-                _picOfDay.value = pic.url
+                _picOfDay.value = pic
         }
     }
 

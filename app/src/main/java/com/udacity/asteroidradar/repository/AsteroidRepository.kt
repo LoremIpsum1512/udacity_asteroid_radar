@@ -40,9 +40,9 @@ class AsteroidRepository @Inject constructor(
     suspend fun refreshAsteroidList() {
         try {
             val sdf = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-            val dateString = sdf.format(Date())
+
             val response =
-                asteroidService.getAsteroidList(start = dateString, end = dateString)
+                asteroidService.getAsteroidList(start = "", end = "")
             val gson = Gson()
             val jsonString = gson.toJson(response.body())
             val list = parseAsteroidsJsonResult(JSONObject(jsonString))
