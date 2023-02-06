@@ -8,6 +8,9 @@
         <variable
             name="asteroid"
             type="com.udacity.asteroidradar.vo.Asteroid" />
+        <variable
+            name="picOfDay"
+            type="com.udacity.asteroidradar.vo.PictureOfDay" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +19,7 @@
         android:background="@color/app_background">
 
         <ImageView
+            android:contentDescription="@{picOfDay.title}"
             android:id="@+id/activity_main_image_of_the_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,6 +94,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:contentDescription="@string/absolute_magnitude_help_button"
                         android:id="@+id/help_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
