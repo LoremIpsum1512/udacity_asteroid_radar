@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.di
 
 import android.content.Context
+import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.ui.main.MainFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -16,5 +17,6 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
+    fun inject(application: AsteroidRadarApplication)
     fun inject(fragment: MainFragment)
 }

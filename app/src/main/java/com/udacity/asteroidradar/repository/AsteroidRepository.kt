@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -26,18 +27,28 @@ class AsteroidRepository @Inject constructor(
 
     val asteroidList: LiveData<List<Asteroid>> = asteroidDao.getAll()
 
-    suspend fun getPictureOfDay(): PictureOfDay {
-        return asteroidService.getPicOfDay()
+    suspend fun getPictureOfDay(): PictureOfDay? {
+        return try {
+            asteroidService.getPicOfDay()
+        } catch (e: Exception) {
+            null
+        }
+
+
     }
 
     suspend fun refreshAsteroidList() {
-        val sdf = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-        val dateString = sdf.format(Date())
-        val response =
-            asteroidService.getAsteroidList(start = dateString, end = dateString)
-        val gson = Gson()
-        val jsonString = gson.toJson(response.body())
-        val list = parseAsteroidsJsonResult(JSONObject(jsonString))
-        asteroidDao.insertAll(list)
+        try {
+            val sdf = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+            val dateString = sdf.format(Date())
+            val response =
+                asteroidService.getAsteroidList(start = dateString, end = dateString)
+            val gson = Gson()
+            val jsonString = gson.toJson(response.body())
+            val list = parseAsteroidsJsonResult(JSONObject(jsonString))
+            asteroidDao.insertAll(list)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

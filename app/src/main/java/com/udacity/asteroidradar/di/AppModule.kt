@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Singleton
 
-@Module(includes = [NetworkModule::class, ViewModelModule::class])
+@Module(includes = [NetworkModule::class, ViewModelModule::class, WorkerBindingModule::class])
 class AppModule {
     @Singleton
     @Provides

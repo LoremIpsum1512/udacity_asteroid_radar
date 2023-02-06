@@ -28,7 +28,8 @@ class MainViewModel @Inject constructor(
     fun getPictureOfDay() {
         viewModelScope.launch {
             val pic = asteroidRepository.getPictureOfDay()
-            _picOfDay.value = pic.url
+            if (pic != null)
+                _picOfDay.value = pic.url
         }
     }
 
