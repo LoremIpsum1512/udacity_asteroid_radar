@@ -1,1 +1,1 @@
-Please replace <API_KEY> from Constants.API_KEY
+Please add API_KEY in local.properties
